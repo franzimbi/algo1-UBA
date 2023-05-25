@@ -1,0 +1,31 @@
+PROGRAM=TP_FINAL_GARCIA_ZIMBIMBAKIS
+CC=gcc
+CFLAGS=-Wall -Werror -std=c99 -pedantic -g
+LDLIBS=-lm
+
+
+all: $(PROGRAM)
+
+$(PROGRAM): pixel.o imagen.o main.o filtro.o validacion.o procesamiento.o
+	$(CC) $(CFLAGS) pixel.o imagen.o main.o validacion.o procesamiento.o -o $(PROGRAM) $(LDLIBS)
+
+pixel.o: pixel.c pixel.h
+	$(CC) $(CFLAGS) -c pixel.c
+
+imagen.o: imagen.c imagen.h pixel.h
+	$(CC) $(CFLAGS) -c imagen.c
+
+filtro.o: imagen.c imagen.h filtro.h
+	$(CC) $(CFLAGS) -c filtro.c
+
+validacion.o: filtro.h filtro.c validacion.h
+	$(CC) $(CFLAGS) -c validacion.c
+
+procesamiento.o: filtro.h filtro.c imagen.h imagen.c procesamiento.h
+	$(CC) $(CFLAGS) -c procesamiento.c
+
+main.o: imagen.c imagen.h filtro.c filtro.h pixel.c pixel.h validacion.h validacion.c procesamiento.c procesamiento.h
+	$(CC) $(CFLAGS) -c main.c
+
+clean: rm -vf *.o $(PROGRAM)
+
